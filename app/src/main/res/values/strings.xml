@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">LibGen</string>
+    <string name="tab_title_favorites">Home</string>
+    <string name="tab_title_home">Favorites</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="author_label">Author(s):</string>
+    <string name="year_label">Year:</string>
+    <string name="publisher_label">Publisher:</string>
+    <string name="filesize_label">File size:</string>
+    <string name="length_label">Length:</string>
+    <string name="pages_count">%s pages</string>
+    <string name="extension_label">Format:</string>
+    <string name="edition_label">Edition:</string>
+
+    <string name="activity_title_settings">Settings</string>
+    <string name="activity_title_details">Details</string>
+    <string name="activity_title_searchres">Search results</string>
+
+    <string name="btn_text_download">Download</string>
+    <string name="btn_text_add_favorite">Add to favorites</string>
+    <string name="btn_text_remove_favorite">Remove from favorites</string>
+
+    <string name="tab_home_text">Book of the day feature will be here soon. The app is currently operating with a test database (~200k records, english only). </string>
+    <string name="tab_favorites_text">You have %d saved books</string>
+    <string name="edition_default">n/a</string>
+
+</resources>
