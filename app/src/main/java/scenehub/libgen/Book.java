@@ -4,76 +4,76 @@ import java.io.Serializable;
 
 public class Book implements Serializable{
     
-    private String id;
-    private String title;
-    private String author;
-    private String year;
-    private String publisher;
-    private long filesize;
-    private String extension;
-    private String pages;
-    private String coverurl;
-    private String md5;
-    private String edition;
+    private String ID;
+    private String Title;
+    private String Author;
+    private String Year;
+    private String Publisher;
+    private long Filesize;
+    private String Extension;
+    private String Pages;
+    private String Coverurl;
+    private String MD5;
+    private String Edition;
     private String downloadUrl;
 
     public Book(String id, String title, String author, String year, String publisher, long fileSize, String extension,
                 String pages, String coverUrl, String md5, String edition, String downloadUrl) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.year = year;
-        this.publisher = publisher;
-        this.filesize = fileSize;
-        this.extension = extension;
-        this.pages = pages;
-        this.coverurl = coverUrl;
-        this.md5 = md5;
-        this.edition = edition;
+        this.ID = id;
+        this.Title = title;
+        this.Author = author;
+        this.Year = year;
+        this.Publisher = publisher;
+        this.Filesize = fileSize;
+        this.Extension = extension;
+        this.Pages = pages;
+        this.Coverurl = coverUrl;
+        this.MD5 = md5;
+        this.Edition = edition;
         this.downloadUrl = downloadUrl;
     }
 
 
 
     public String getTitle() {
-        return title;
+        return Title;
     }
 
     public String getAuthor() {
-        return author;
+        return Author;
     }
 
     public String getYear() {
-        return year;
+        return Year;
     }
 
     public String getPublisher() {
-        return publisher;
+        return Publisher;
     }
 
     public long getFilesize() {
-        return filesize;
+        return Filesize;
     }
 
     public String getExtension() {
-        return extension;
+        return Extension;
     }
 
     public String getPages() {
-        return pages;
+        return Pages;
     }
 
-    public String getCoverurl() { return coverurl; }
+    public String getCoverurl() { return Coverurl; }
 
-    public String getMd5() { return md5; }
+    public String getMD5() { return MD5; }
 
     public String getDownloadUrl() { return downloadUrl; }
 
     public String getEdition() {
-        return edition;
+        return Edition;
     }
 
-    public String getId() { return id; }
+    public String getID() { return ID; }
 
     public void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;

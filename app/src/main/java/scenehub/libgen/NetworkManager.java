@@ -1,6 +1,7 @@
 package scenehub.libgen;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -33,8 +34,8 @@ public class NetworkManager {
 
 
 
-    public Call<List<Book>> getBooksJSON(String query) {
-        return apiInterface.getBooksJSON(query);
+    public Call<List<Book>> getBooksJSON(Map map) {
+        return apiInterface.getBooksJSON(map);
     }
 
     public Call<DownloadUrl> getDownloadUrlJSON(String md5) {

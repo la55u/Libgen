@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,13 +32,20 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.activity_title_searchres);
         initView();
         initFAB();
 
         if(getIntent().getSerializableExtra("query") != null){
             String query = (String)getIntent().getSerializableExtra("query");
-            loadJSON(query);
+            Map<String, Object> map = new HashMap<>();
+            map.put("query",query);
+            loadJSON(map);
+        }
+        else if (getIntent().getSerializableExtra("barcode") != null){
+            String barcode = (String)getIntent().getSerializableExtra("barcode");
+            Map<String, Object> map = new HashMap<>();
+            map.put("barcode",barcode);
+            loadJSON(map);
         }
     }
 
@@ -62,9 +71,9 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    private void loadJSON(String query){
+    private void loadJSON(Map map){
 
-        NetworkManager.getInstance().getBooksJSON(query).enqueue(new Callback<List<Book>>() {
+        NetworkManager.getInstance().getBooksJSON(map).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
 

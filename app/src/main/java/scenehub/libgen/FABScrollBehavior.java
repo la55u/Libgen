@@ -29,7 +29,7 @@ public class FABScrollBehavior extends FloatingActionButton.Behavior {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
         if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE) {
             // User scrolled down and the FAB is currently visible -> hide the FAB
-            // child.hide() lenne csak nem mukodik
+            // it should be simply child.hide() but it doesn't work
             // https://stackoverflow.com/questions/41153619/floating-action-button-not-visible-on-scrolling-after-updating-google-support?noredirect=1&lq=1
             child.hide(new FloatingActionButton.OnVisibilityChangedListener() {
                 @Override

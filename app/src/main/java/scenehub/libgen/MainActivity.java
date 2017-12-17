@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //searchString = query;
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 intent.putExtra("query", query);
                 startActivity(intent);
@@ -88,10 +87,14 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Snackbar.make(findViewById(R.id.main_content), "Coming soon", Snackbar.LENGTH_LONG).show();
-            return true;
+        switch(id){
+            case R.id.menu_settings:
+                Snackbar.make(findViewById(R.id.main_content), "Coming soon", Snackbar.LENGTH_LONG).show();
+                return true;
+            case R.id.menu_scan:
+                Intent intent = new Intent(getApplicationContext(), ScanBarcodeActivity.class);
+                startActivity(intent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -41,7 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public boolean insertFavoriteBook(Book b){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ID, b.getId());
+        contentValues.put(ID, b.getID());
         contentValues.put(TITLE,b.getTitle());
         contentValues.put(AUTHOR,b.getAuthor());
         contentValues.put(YEAR,b.getYear());
@@ -51,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         contentValues.put(PAGES,b.getPages());
         contentValues.put(COVERURL,b.getCoverurl());
         contentValues.put(EDITION,b.getEdition());
-        contentValues.put(MD5,b.getMd5());
+        contentValues.put(MD5,b.getMD5());
         long result = db.insert(TABLE_NAME_FAV, null, contentValues);
         return result != -1;
     }
@@ -69,7 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public boolean isFavorite(Book b){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM favorites_table WHERE id = ?", new String[]{b.getId()});
+        Cursor cursor = db.rawQuery("SELECT * FROM favorites_table WHERE id = ?", new String[]{b.getID()});
 
         if(cursor!=null && cursor.moveToFirst() && cursor.getCount()>0){
             return true;

@@ -60,7 +60,7 @@
                     android:id="@+id/tv_author_label"
                     android:layout_alignParentStart="true"
                     android:textSize="@dimen/detail_textsize"
-                    android:text="@string/author_label"
+                    android:text="@string/label_author"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -82,7 +82,7 @@
                     android:layout_alignParentStart="true"
                     android:textSize="@dimen/detail_textsize"
                     android:textStyle="bold"
-                    android:text="@string/publisher_label"
+                    android:text="@string/label_publisher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -102,13 +102,12 @@
                     android:layout_alignParentStart="true"
                     android:textSize="@dimen/detail_textsize"
                     android:textStyle="bold"
-                    android:text="@string/edition_label"
+                    android:text="@string/label_edition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:layout_alignParentEnd="true"
                     android:textSize="@dimen/detail_textsize"
-                    android:text="@string/edition_default"
                     android:id="@+id/tv_edition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -121,7 +120,7 @@
                     android:layout_alignParentStart="true"
                     android:textSize="@dimen/detail_textsize"
                     android:textStyle="bold"
-                    android:text="@string/year_label"
+                    android:text="@string/label_year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -139,7 +138,7 @@
                     android:layout_alignParentStart="true"
                     android:textSize="@dimen/detail_textsize"
                     android:textStyle="bold"
-                    android:text="@string/length_label"
+                    android:text="@string/label_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -157,7 +156,7 @@
                     android:layout_alignParentStart="true"
                     android:textSize="@dimen/detail_textsize"
                     android:textStyle="bold"
-                    android:text="@string/filesize_label"
+                    android:text="@string/label_filesize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -175,7 +174,7 @@
                     android:layout_alignParentStart="true"
                     android:textSize="@dimen/detail_textsize"
                     android:textStyle="bold"
-                    android:text="@string/extension_label"
+                    android:text="@string/label_extension"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView

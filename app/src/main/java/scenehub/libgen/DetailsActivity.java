@@ -37,7 +37,7 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.activity_title_details);
+
 
         dbHelper = new DatabaseHelper(this);
 
@@ -66,14 +66,14 @@ public class DetailsActivity extends AppCompatActivity {
             tvPages.setText(getString(R.string.pages_count,b.getPages()));
             tvEdition.setText(b.getEdition());
 
-            getDownloadUrl(b.getMd5());
+            getDownloadUrl(b.getMD5());
             initButtons();
 
         }
 
     }
 
-    // 5. dia copy-paste
+
     public boolean requestNeededPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
@@ -125,7 +125,7 @@ public class DetailsActivity extends AppCompatActivity {
 
    public void initButtons() {
        btnDownload = findViewById(R.id.btnDownload);
-       btnDownload.setEnabled(false); //amig nincs behuzva a letolto link addig nem engedelyezett a gomb
+       btnDownload.setEnabled(false); //download button is not active until download link is received
        btnDownload.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -150,7 +150,7 @@ public class DetailsActivity extends AppCompatActivity {
                        Snackbar.make(findViewById(R.id.scrollview), "Error occurred", Snackbar.LENGTH_LONG).show();
                    }
                }else{
-                   if (dbHelper.deleteFavoriteBook(b.getId())>0) {
+                   if (dbHelper.deleteFavoriteBook(b.getID())>0) {
                        Snackbar.make(findViewById(R.id.scrollview), "Successfully removed from favorites", Snackbar.LENGTH_LONG).show();
                        btnFavorite.setText(R.string.btn_text_add_favorite);
                    } else {
