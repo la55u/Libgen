@@ -37,7 +37,7 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dbHelper = new DatabaseHelper(this);
 
@@ -50,6 +50,8 @@ public class DetailsActivity extends AppCompatActivity {
         TextView tvPublisher = findViewById(R.id.tv_publisher);
         TextView tvPages = findViewById(R.id.tv_pages);
         TextView tvEdition = findViewById(R.id.tv_edition);
+        TextView tvScanned = findViewById(R.id.tv_scanned);
+        TextView tvLanguage = findViewById(R.id.tv_language);
 
 
         if(getIntent().getSerializableExtra("book") != null){
@@ -64,13 +66,13 @@ public class DetailsActivity extends AppCompatActivity {
             tvFileSize.setText(Formatter.formatFileSize(getApplicationContext(), b.getFilesize()));
             tvPublisher.setText(b.getPublisher());
             tvPages.setText(getString(R.string.pages_count,b.getPages()));
-            tvEdition.setText(b.getEdition());
+            tvEdition.setText(b.getEdition().equals("") ? "-" : b.getEdition());
+            tvLanguage.setText(b.getLanguage());
+            tvScanned.setText(b.getScanned().equals("1") ? "Yes" : (b.getScanned().equals("0") ? "No" : "?"));
 
             getDownloadUrl(b.getMD5());
             initButtons();
-
         }
-
     }
 
 

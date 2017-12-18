@@ -61,8 +61,10 @@ public void initFavorites(){
             String extension = cursor.getString(cursor.getColumnIndex(DatabaseHelper.EXTENSION));
             String md5 = cursor.getString(cursor.getColumnIndex(DatabaseHelper.MD5));
             String publisher = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PUBLISHER));
+            String language = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PUBLISHER));
+            String scanned = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PUBLISHER));
 
-            Book b = new Book(id,title,author,year,publisher,fileSize,extension,pages,coverUrl,md5,edition, null);
+            Book b = new Book(id,title,author,year,publisher,fileSize,extension,pages,coverUrl,md5,edition, language, scanned, null);
             favoriteBooks.add(b);
 
         }while (cursor.moveToNext());

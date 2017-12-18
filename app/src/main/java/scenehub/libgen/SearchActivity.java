@@ -32,26 +32,26 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         initView();
         initFAB();
-
-        if(getIntent().getSerializableExtra("query") != null){
-            String query = (String)getIntent().getSerializableExtra("query");
-            Map<String, Object> map = new HashMap<>();
-            map.put("query",query);
-            loadJSON(map);
-        }
-        else if (getIntent().getSerializableExtra("barcode") != null){
-            String barcode = (String)getIntent().getSerializableExtra("barcode");
-            Map<String, Object> map = new HashMap<>();
-            map.put("barcode",barcode);
-            loadJSON(map);
-        }
+        startSearch();
     }
 
 
-
-
+    private void startSearch(){
+        Map<String, Object> map = new HashMap<>();
+        if(getIntent().getSerializableExtra("query") != null){
+            String query = (String)getIntent().getSerializableExtra("query");
+            map.put("query",query);
+        }
+        else if (getIntent().getSerializableExtra("barcode") != null){
+            String barcode = (String)getIntent().getSerializableExtra("barcode");
+            map.put("barcode",barcode);
+        }
+        loadJSON(map);
+    }
 
     private void initFAB() {
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -68,18 +68,14 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-
     }
 
     private void loadJSON(Map map){
-
         NetworkManager.getInstance().getBooksJSON(map).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-
                 Log.d(TAG, "onResponse: " + response.code());
                 if (response.isSuccessful()) {
-
                     Snackbar.make(findViewById(R.id.mylayout), response.body().size()+" results found for your query", Snackbar.LENGTH_LONG).show();
                     books = new ArrayList<>(response.body());
                     adapter = new DataAdapter(books, getApplicationContext());

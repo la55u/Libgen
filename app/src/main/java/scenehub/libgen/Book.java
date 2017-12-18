@@ -15,10 +15,12 @@ public class Book implements Serializable{
     private String Coverurl;
     private String MD5;
     private String Edition;
+    private String Language;
+    private String Scanned;
     private String downloadUrl;
 
     public Book(String id, String title, String author, String year, String publisher, long fileSize, String extension,
-                String pages, String coverUrl, String md5, String edition, String downloadUrl) {
+                String pages, String coverUrl, String md5, String edition, String language, String scanned, String downloadUrl) {
         this.ID = id;
         this.Title = title;
         this.Author = author;
@@ -30,6 +32,8 @@ public class Book implements Serializable{
         this.Coverurl = coverUrl;
         this.MD5 = md5;
         this.Edition = edition;
+        this.Language = language;
+        this.Scanned = scanned;
         this.downloadUrl = downloadUrl;
     }
 
@@ -74,6 +78,10 @@ public class Book implements Serializable{
     }
 
     public String getID() { return ID; }
+
+    public String getLanguage() { return Language; }
+
+    public String getScanned() { return Scanned; }
 
     public void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;

@@ -25,11 +25,13 @@
         </activity>
         <activity
             android:name=".SearchActivity"
-            android:label="@string/activity_title_searchres">
-        </activity>
+            android:label="@string/activity_title_searchres"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".DetailsActivity"
-            android:label="@string/activity_title_details" />
+            android:label="@string/activity_title_details"
+            android:parentActivityName=".SearchActivity" />
         <activity
             android:name=".ScanBarcodeActivity"
             android:label="@string/activity_title_scan">
