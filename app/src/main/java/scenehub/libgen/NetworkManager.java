@@ -1,5 +1,7 @@
 package scenehub.libgen;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 import java.util.Map;
 
@@ -41,5 +43,7 @@ public class NetworkManager {
     public Call<DownloadUrl> getDownloadUrlJSON(String md5) {
         return apiInterface.getDownloadUrlJSON(md5);
     }
+
+    public Call<JsonObject> getDbInfoJSON(){ return apiInterface.getDbInfoJSON("asd"); }
 
 }

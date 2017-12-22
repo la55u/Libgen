@@ -7,7 +7,7 @@
     tools:context="scenehub.libgen.MainActivity">
 
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/state_label_libgen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/section_label"
+        android:layout_below="@+id/state_label_libgen"
         />
 
 </RelativeLayout>

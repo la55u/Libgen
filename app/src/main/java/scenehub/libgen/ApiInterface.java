@@ -1,5 +1,7 @@
 package scenehub.libgen;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,4 +18,6 @@ public interface ApiInterface {
     @GET("libgen/api.php")
     Call<DownloadUrl> getDownloadUrlJSON(@Query("md5") String md5);
 
+    @GET("libgen/api.php")
+    Call<JsonObject> getDbInfoJSON(@Query("info") String asd);
 }

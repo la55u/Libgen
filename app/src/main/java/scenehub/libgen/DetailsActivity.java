@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.Formatter;
@@ -25,11 +26,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailsActivity extends AppCompatActivity {
-    private static final String TAG = "DetailsActivity";
+public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    private static final String TAG = DetailsActivity.class.getSimpleName();
     private Button btnDownload, btnFavorite;
     private DatabaseHelper dbHelper;
     private Book b;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,15 @@ public class DetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dbHelper = new DatabaseHelper(this);
+        initView();
+        getDownloadableData();
+        initButtons();
+    }
 
-        ImageView imageViewCover = findViewById(R.id.cover);
+
+    public void initView(){
+        swipeRefreshLayout = findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
         TextView tvTitle = findViewById(R.id.tv_title);
         TextView tvAuthor = findViewById(R.id.tv_author);
         TextView tvYear = findViewById(R.id.tv_year);
@@ -53,11 +61,8 @@ public class DetailsActivity extends AppCompatActivity {
         TextView tvScanned = findViewById(R.id.tv_scanned);
         TextView tvLanguage = findViewById(R.id.tv_language);
 
-
         if(getIntent().getSerializableExtra("book") != null){
             b = (Book)getIntent().getSerializableExtra("book");
-
-            Picasso.with(this).load("http://libgen.io/covers/" + b.getCoverurl()).into(imageViewCover);
 
             tvAuthor.setText(b.getAuthor());
             tvTitle.setText(b.getTitle());
@@ -69,20 +74,36 @@ public class DetailsActivity extends AppCompatActivity {
             tvEdition.setText(b.getEdition().equals("") ? "-" : b.getEdition());
             tvLanguage.setText(b.getLanguage());
             tvScanned.setText(b.getScanned().equals("1") ? "Yes" : (b.getScanned().equals("0") ? "No" : "?"));
-
-            getDownloadUrl(b.getMD5());
-            initButtons();
         }
+    }
+
+    // getting everything that sources from the web
+    // this method is called in onCreate and in onRefresh
+    private void getDownloadableData() {
+        // getting cover image
+        final ImageView cover = findViewById(R.id.cover);
+        Picasso.with(this)
+                .load("http://libgen.io/covers/" + b.getCoverurl())
+                .into(cover, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        // TODO hide progressbar
+                    }
+                    @Override
+                    public void onError() {
+                        cover.setImageResource(R.drawable.cover_placeholder);
+                    }
+        });
+
+        // getting download url
+        getDownloadUrl();
     }
 
 
     public boolean requestNeededPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                // aszinkron módon magyarázat megjelenítése dialógusban,
-                // majd újra kérés manuálisan
-            }
+
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
             return true;
@@ -90,8 +111,9 @@ public class DetailsActivity extends AppCompatActivity {
         return false;
     }
 
-    private void getDownloadUrl(String md5){
-        NetworkManager.getInstance().getDownloadUrlJSON(md5).enqueue(new Callback<DownloadUrl>() {
+    // gets the download url from the server based on the book's MD5
+    private void getDownloadUrl(){
+        NetworkManager.getInstance().getDownloadUrlJSON(b.getMD5()).enqueue(new Callback<DownloadUrl>() {
             @Override
             public void onResponse(Call<DownloadUrl> call, Response<DownloadUrl> response) {
                 Log.d(TAG, "onResponse: " + response.code());
@@ -110,18 +132,17 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
-    private void downloadFile(Book book) {
+    private void downloadFile() {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(b.getDownloadUrl()));
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        String fileName = book.getTitle() +" by "+ book.getAuthor()+'.'+book.getExtension();
+        String fileName = b.getTitle() +" by "+ b.getAuthor()+'.'+b.getExtension();
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
         DownloadManager manager = (DownloadManager)this.getSystemService(Context.DOWNLOAD_SERVICE);
         if (manager != null) {
             manager.enqueue(request);
             Snackbar.make(findViewById(R.id.scrollview), "Download started", Snackbar.LENGTH_LONG).show();
         }
-
     }
 
 
@@ -132,11 +153,12 @@ public class DetailsActivity extends AppCompatActivity {
            @Override
            public void onClick(View v) {
                if (requestNeededPermission()) {
-                   downloadFile(b);
+                   downloadFile();
                }
            }
        });
 
+       dbHelper = new DatabaseHelper(this);
        btnFavorite = findViewById(R.id.btnFavorite);
        if(dbHelper.isFavorite(b)){
            btnFavorite.setText(R.string.btn_text_remove_favorite);
@@ -164,4 +186,9 @@ public class DetailsActivity extends AppCompatActivity {
    }
 
 
+    @Override
+    public void onRefresh() {
+        getDownloadableData();
+        swipeRefreshLayout.setRefreshing(false);
+    }
 }

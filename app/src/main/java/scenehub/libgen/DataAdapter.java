@@ -35,7 +35,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.MyViewHolder> 
         myViewHolder.tv_title.setText(book.getTitle());
         myViewHolder.tv_year.setText(book.getYear());
         myViewHolder.tv_extension.setText(book.getExtension());
-
+        
         myViewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

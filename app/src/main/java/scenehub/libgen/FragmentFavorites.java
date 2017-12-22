@@ -19,12 +19,13 @@ import java.util.ArrayList;
 public class FragmentFavorites extends android.support.v4.app.Fragment {
 
     DatabaseHelper dbHelper;
+    DataAdapter adapter;
     ArrayList<Book> favoriteBooks;
     RecyclerView recyclerView;
-    DataAdapter adapter;
     Cursor cursor;
     TextView textView;
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
 
@@ -40,7 +41,7 @@ public class FragmentFavorites extends android.support.v4.app.Fragment {
         dbHelper = new DatabaseHelper(getActivity());
         cursor = dbHelper.getAllData();
 
-        textView = rootView.findViewById(R.id.section_label);
+        textView = rootView.findViewById(R.id.state_label_libgen);
         textView.setText(getString(R.string.tab_favorites_text, cursor.getCount()));
 
         initFavorites();
@@ -71,11 +72,7 @@ public void initFavorites(){
 
     }
 
-
 }
-
-
-
 
 
 }
