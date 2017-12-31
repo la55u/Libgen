@@ -25,9 +25,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by LA on 029, 10/29.
- */
 
 public class FragmentHome extends android.support.v4.app.Fragment{
     private Map<String, Object> dbInfo;

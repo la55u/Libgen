@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,12 +23,12 @@ import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     private static final String TAG = SearchActivity.class.getSimpleName();
-    private RecyclerView recyclerView;
     private ArrayList<Book> books;
     private DataAdapter adapter;
     private ProgressBar progressBar = null;
     private Map<String, Object> searchMap;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,22 +53,36 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
             String barcode = (String)getIntent().getSerializableExtra("barcode");
             searchMap.put("barcode",barcode);
         }
-        loadJSON();
+        loadJSON(0);
     }
 
 
     private void initView() {
-        recyclerView = findViewById(R.id.recycler_view);
+        books = new ArrayList<>();
+        adapter = new DataAdapter(books, getApplicationContext());
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
         progressBar = findViewById(R.id.progressbar);
         progressBar.setVisibility(View.VISIBLE);
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(this);
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Toast.makeText(getApplicationContext(), "page: "+page, Toast.LENGTH_SHORT).show();
+                loadJSON(page);
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
     }
 
-    private void loadJSON(){
+
+    private void loadJSON(final int page){
+        searchMap.put("page", page);
+
         NetworkManager.getInstance().getBooksJSON(searchMap).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
@@ -75,10 +90,10 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
                 progressBar.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
                 if (response.isSuccessful()) {
-                    Snackbar.make(findViewById(R.id.mylayout), response.body().size()+" results found for your query", Snackbar.LENGTH_LONG).show();
-                    books = new ArrayList<>(response.body());
-                    adapter = new DataAdapter(books, getApplicationContext());
-                    recyclerView.setAdapter(adapter);
+                    if(page==0) Snackbar.make(findViewById(R.id.mylayout), response.body().size()+"+ results found for your query", Snackbar.LENGTH_LONG).show();
+                    ArrayList<Book> newBooks= new ArrayList<>(response.body());
+                    books.addAll(newBooks);
+                    adapter.notifyItemRangeInserted(page*15,15);
                 } else {
                     Snackbar.make(findViewById(R.id.mylayout), "Error: "+response.message(), Snackbar.LENGTH_LONG).show();
                 }
@@ -96,6 +111,10 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
 
     @Override
     public void onRefresh() {
-        loadJSON();
+        books.clear();
+        adapter.notifyDataSetChanged();
+        scrollListener.resetState();
+        loadJSON(0);
     }
+
 }

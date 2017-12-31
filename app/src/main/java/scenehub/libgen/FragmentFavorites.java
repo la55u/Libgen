@@ -12,9 +12,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by LA on 029, 10/29.
- */
 
 public class FragmentFavorites extends android.support.v4.app.Fragment {
 
