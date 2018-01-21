@@ -1,10 +1,12 @@
 package scenehub.libgen;
 
+import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
+
 import java.io.Serializable;
 
-public class Book implements Serializable{
-    
-    private String ID;
+public class Book extends SugarRecord implements Serializable{
+
     private String Title;
     private String Author;
     private String Year;
@@ -17,27 +19,15 @@ public class Book implements Serializable{
     private String Edition;
     private String Language;
     private String Scanned;
-    private String downloadUrl;
 
-    public Book(String id, String title, String author, String year, String publisher, long fileSize, String extension,
-                String pages, String coverUrl, String md5, String edition, String language, String scanned, String downloadUrl) {
-        this.ID = id;
-        this.Title = title;
-        this.Author = author;
-        this.Year = year;
-        this.Publisher = publisher;
-        this.Filesize = fileSize;
-        this.Extension = extension;
-        this.Pages = pages;
-        this.Coverurl = coverUrl;
-        this.MD5 = md5;
-        this.Edition = edition;
-        this.Language = language;
-        this.Scanned = scanned;
-        this.downloadUrl = downloadUrl;
+    @Ignore
+    private String downloadUrl; //ignoring it because it changes over time
+
+
+
+    public boolean isFavorite(){
+        return !Book.find(Book.class, "MD5 = ?", getMD5()).isEmpty();
     }
-
-
 
     public String getTitle() {
         return Title;
@@ -76,8 +66,6 @@ public class Book implements Serializable{
     public String getEdition() {
         return Edition;
     }
-
-    public String getID() { return ID; }
 
     public String getLanguage() { return Language; }
 

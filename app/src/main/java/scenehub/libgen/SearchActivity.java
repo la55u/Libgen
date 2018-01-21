@@ -91,7 +91,7 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
                 swipeRefreshLayout.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if(page==0) Snackbar.make(findViewById(R.id.mylayout), response.body().size()+"+ results found for your query", Snackbar.LENGTH_LONG).show();
-                    ArrayList<Book> newBooks= new ArrayList<>(response.body());
+                    ArrayList<Book> newBooks = new ArrayList<>(response.body());
                     books.addAll(newBooks);
                     adapter.notifyItemRangeInserted(page*15,15);
                 } else {

@@ -47,6 +47,18 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.MyViewHolder> 
 
     }
 
+    public void addItem(Book book){
+        books.add(book);
+        notifyItemInserted(books.size() - 1);
+        book.save();
+    }
+
+    public void removeItem(Book book){
+        books.remove(book);
+        notifyDataSetChanged();
+        book.delete();
+    }
+
     @Override
     public int getItemCount() {
         return books.size();

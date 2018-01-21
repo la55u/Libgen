@@ -16,7 +16,7 @@ public interface ApiInterface {
     Call<List<Book>> getBooksJSON(@QueryMap Map<String, Object> map);
 
     @GET("libgen/api.php")
-    Call<DownloadUrl> getDownloadUrlJSON(@Query("md5") String md5);
+    Call<DetailsActivity.DownloadUrl> getDownloadUrlJSON(@Query("md5") String md5);
 
     @GET("libgen/api.php")
     Call<JsonObject> getDbInfoJSON(@Query("info") String asd);

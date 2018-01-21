@@ -40,10 +40,12 @@ public class NetworkManager {
         return apiInterface.getBooksJSON(map);
     }
 
-    public Call<DownloadUrl> getDownloadUrlJSON(String md5) {
+    public Call<DetailsActivity.DownloadUrl> getDownloadUrlJSON(String md5) {
         return apiInterface.getDownloadUrlJSON(md5);
     }
 
-    public Call<JsonObject> getDbInfoJSON(){ return apiInterface.getDbInfoJSON("asd"); }
+    public Call<JsonObject> getDbInfoJSON(){
+        return apiInterface.getDbInfoJSON("asd");
+    }
 
 }

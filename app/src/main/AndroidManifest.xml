@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
+        android:name="com.orm.SugarApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -36,6 +37,11 @@
             android:name=".ScanBarcodeActivity"
             android:label="@string/activity_title_scan">
         </activity>
+
+        <meta-data android:name="DATABASE" android:value="favorite_books.db" />
+        <meta-data android:name="VERSION" android:value="1" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="scenehub.libgen" />
     </application>
 
 </manifest>

@@ -29,9 +29,9 @@ import retrofit2.Response;
 public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private Button btnDownload, btnFavorite;
-    private DatabaseHelper dbHelper;
     private Book b;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         initView();
         getDownloadableData();
@@ -119,7 +120,7 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
                 Log.d(TAG, "onResponse: " + response.code());
                 if (response.isSuccessful()) {
                     btnDownload.setEnabled(true);
-                    b.setDownloadUrl(response.body().getDownload());
+                    b.setDownloadUrl(response.body().getUrl());
                 } else {
                     Snackbar.make(findViewById(R.id.scrollview), "Error: "+response.message(), Snackbar.LENGTH_LONG).show();
                 }
@@ -158,28 +159,21 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
            }
        });
 
-       dbHelper = new DatabaseHelper(this);
        btnFavorite = findViewById(R.id.btnFavorite);
-       if(dbHelper.isFavorite(b)){
+       if(b.isFavorite()){
            btnFavorite.setText(R.string.btn_text_remove_favorite);
        }
        btnFavorite.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               if(!dbHelper.isFavorite(b)){
-                   if (dbHelper.insertFavoriteBook(b)) {
-                       Snackbar.make(findViewById(R.id.scrollview), "Successfully added to favorites", Snackbar.LENGTH_LONG).show();
-                       btnFavorite.setText(R.string.btn_text_remove_favorite);
-                   } else {
-                       Snackbar.make(findViewById(R.id.scrollview), "Error occurred", Snackbar.LENGTH_LONG).show();
-                   }
+               if(!b.isFavorite()){
+                   b.save();
+                   Snackbar.make(findViewById(R.id.scrollview), "Successfully added to favorites", Snackbar.LENGTH_SHORT).show();
+                   btnFavorite.setText(R.string.btn_text_remove_favorite);
                }else{
-                   if (dbHelper.deleteFavoriteBook(b.getID())>0) {
-                       Snackbar.make(findViewById(R.id.scrollview), "Successfully removed from favorites", Snackbar.LENGTH_LONG).show();
-                       btnFavorite.setText(R.string.btn_text_add_favorite);
-                   } else {
-                       Snackbar.make(findViewById(R.id.scrollview), "Error occurred", Snackbar.LENGTH_LONG).show();
-                   }
+                  Book.deleteAll(Book.class, "MD5 =? ", b.getMD5());
+                  Snackbar.make(findViewById(R.id.scrollview), "Successfully removed from favorites", Snackbar.LENGTH_SHORT).show();
+                  btnFavorite.setText(R.string.btn_text_add_favorite);
                }
            }
        });
@@ -191,4 +185,11 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
         getDownloadableData();
         swipeRefreshLayout.setRefreshing(false);
     }
+
+    public class DownloadUrl{
+        private String url;
+        public String getUrl(){return url;}
+    }
+
+
 }
