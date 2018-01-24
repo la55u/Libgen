@@ -40,7 +40,7 @@ public class NetworkManager {
         return apiInterface.getBooksJSON(map);
     }
 
-    public Call<DetailsActivity.DownloadUrl> getDownloadUrlJSON(String md5) {
+    public Call<DetailsActivity.ParseData> getDownloadUrlJSON(String md5) {
         return apiInterface.getDownloadUrlJSON(md5);
     }
 

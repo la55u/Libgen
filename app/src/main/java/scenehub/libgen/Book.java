@@ -1,7 +1,6 @@
 package scenehub.libgen;
 
 import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
 
@@ -19,9 +18,7 @@ public class Book extends SugarRecord implements Serializable{
     private String Edition;
     private String Language;
     private String Scanned;
-
-    @Ignore
-    private String downloadUrl; //ignoring it because it changes over time
+    private String fileName;
 
 
 
@@ -61,8 +58,6 @@ public class Book extends SugarRecord implements Serializable{
 
     public String getMD5() { return MD5; }
 
-    public String getDownloadUrl() { return downloadUrl; }
-
     public String getEdition() {
         return Edition;
     }
@@ -71,7 +66,6 @@ public class Book extends SugarRecord implements Serializable{
 
     public String getScanned() { return Scanned; }
 
-    public void setDownloadUrl(String downloadUrl) {
-        this.downloadUrl = downloadUrl;
-    }
+
+
 }

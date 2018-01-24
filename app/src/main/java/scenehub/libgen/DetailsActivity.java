@@ -31,6 +31,7 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
     private Button btnDownload, btnFavorite;
     private Book b;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ParseData parseData;
 
 
     @Override
@@ -40,7 +41,6 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         initView();
         getDownloadableData();
@@ -112,21 +112,21 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
         return false;
     }
 
-    // gets the download url from the server based on the book's MD5
+    // gets the download url and filename from the server based on the book's MD5
     private void getDownloadUrl(){
-        NetworkManager.getInstance().getDownloadUrlJSON(b.getMD5()).enqueue(new Callback<DownloadUrl>() {
+        NetworkManager.getInstance().getDownloadUrlJSON(b.getMD5()).enqueue(new Callback<ParseData>() {
             @Override
-            public void onResponse(Call<DownloadUrl> call, Response<DownloadUrl> response) {
+            public void onResponse(Call<ParseData> call, Response<ParseData> response) {
                 Log.d(TAG, "onResponse: " + response.code());
                 if (response.isSuccessful()) {
                     btnDownload.setEnabled(true);
-                    b.setDownloadUrl(response.body().getUrl());
+                    parseData = response.body();
                 } else {
                     Snackbar.make(findViewById(R.id.scrollview), "Error: "+response.message(), Snackbar.LENGTH_LONG).show();
                 }
             }
             @Override
-            public void onFailure(Call<DownloadUrl> call, Throwable t) {
+            public void onFailure(Call<ParseData> call, Throwable t) {
                 t.printStackTrace();
                 Snackbar.make(findViewById(R.id.scrollview), "Error requesting download url, check LOG", Snackbar.LENGTH_LONG).show();
             }
@@ -134,11 +134,11 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
     }
 
     private void downloadFile() {
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(b.getDownloadUrl()));
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(parseData.getUrl()));
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        String fileName = b.getTitle() +" by "+ b.getAuthor()+'.'+b.getExtension();
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+        //String fileName = b.getTitle() +" by "+ b.getAuthor()+'.'+b.getExtension();
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, parseData.getFilename());
         DownloadManager manager = (DownloadManager)this.getSystemService(Context.DOWNLOAD_SERVICE);
         if (manager != null) {
             manager.enqueue(request);
@@ -171,9 +171,9 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
                    Snackbar.make(findViewById(R.id.scrollview), "Successfully added to favorites", Snackbar.LENGTH_SHORT).show();
                    btnFavorite.setText(R.string.btn_text_remove_favorite);
                }else{
-                  Book.deleteAll(Book.class, "MD5 =? ", b.getMD5());
-                  Snackbar.make(findViewById(R.id.scrollview), "Successfully removed from favorites", Snackbar.LENGTH_SHORT).show();
-                  btnFavorite.setText(R.string.btn_text_add_favorite);
+                   Book.deleteAll(Book.class, "MD5 =? ", b.getMD5());
+                   Snackbar.make(findViewById(R.id.scrollview), "Successfully removed from favorites", Snackbar.LENGTH_SHORT).show();
+                   btnFavorite.setText(R.string.btn_text_add_favorite);
                }
            }
        });
@@ -186,9 +186,11 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    public class DownloadUrl{
+    public class ParseData {
         private String url;
+        private String filename;
         public String getUrl(){return url;}
+        public String getFilename(){return filename;}
     }
 
 

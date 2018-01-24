@@ -49,14 +49,19 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.MyViewHolder> 
 
     public void addItem(Book book){
         books.add(book);
-        notifyItemInserted(books.size() - 1);
+        //notifyItemInserted(books.size() - 1);
+        notifyDataSetChanged();
         book.save();
     }
 
     public void removeItem(Book book){
-        books.remove(book);
-        notifyDataSetChanged();
-        book.delete();
+        for(Book b : books){
+            if(b.getMD5()==book.getMD5()){
+                books.remove(b);
+                Book.deleteAll(Book.class, "MD5=?", b.getMD5());
+                notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

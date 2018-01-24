@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -25,20 +24,6 @@ public class FragmentFavorites extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
 
-        favoriteBooks = (ArrayList<Book>) Book.listAll(Book.class);
-        recyclerView = rootView.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new DataAdapter(favoriteBooks, getContext());
-        recyclerView.setAdapter(adapter);
-
-
-        tvFavCnt = rootView.findViewById(R.id.favcount);
-        tvFavCnt.setText(getString(R.string.tab_favorites_text, favoriteBooks.size()));
-
-
         return rootView;
     }
 
@@ -46,8 +31,19 @@ public class FragmentFavorites extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getContext(), "size: "+Book.listAll(Book.class).size(), Toast.LENGTH_SHORT).show();
         favoriteBooks = (ArrayList<Book>) Book.listAll(Book.class);
-        adapter.notifyDataSetChanged();
+        recyclerView = getView().findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new DataAdapter(favoriteBooks, getContext());
+        recyclerView.setAdapter(adapter);
+
+        tvFavCnt = getView().findViewById(R.id.favcount);
+        tvFavCnt.setText(getString(R.string.tab_favorites_text, favoriteBooks.size()));
+
     }
+
+
 }
