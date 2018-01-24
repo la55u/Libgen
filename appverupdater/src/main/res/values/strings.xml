@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright 2017 Aleksandr Tarakanov
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <!-- AlertDialog UpdateInfo Available -->
+    <string name="appverupdate_update_available">Update available</string>
+    <string name="appverupdater_content_update_available">A new version of %1$s is available to download: %2$s</string>
+    <string name="appverupdater_notes_update_available">Update %1$s app to version %2$s \nWhat\'s new: \n%3$s</string>
+    <string name="appverupdater_positivetext_update_available">Update</string>
+    <string name="appverupdater_negativetext_update_available">Later</string>
+    <!-- AlertDialog Not UpdateInfo Available -->
+    <string name="appverupdate_not_update_available">No updates available!</string>
+    <string name="appverupdater_content_not_update_available">You are using the latest version of the app</string>
+    <!-- ProgressDialog UpdateInfo Available -->
+    <string name="appverupdater_progressdialog_message_update_available">Downloading</string>
+    <!-- AlertDialog Denied Permissin -->
+    <string name="appverupdater_denied_message">Storage permissions are required to download files and updates for this app</string>
+</resources>
