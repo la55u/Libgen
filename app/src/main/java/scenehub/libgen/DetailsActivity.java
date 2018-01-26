@@ -3,6 +3,7 @@ package scenehub.libgen;
 import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,6 +35,7 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
     private Book b;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ParseData parseData;
+
 
 
     @Override
@@ -137,7 +141,6 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(parseData.getUrl()));
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        //String fileName = b.getTitle() +" by "+ b.getAuthor()+'.'+b.getExtension();
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, parseData.getFilename());
         DownloadManager manager = (DownloadManager)this.getSystemService(Context.DOWNLOAD_SERVICE);
         if (manager != null) {
@@ -179,6 +182,25 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
        });
    }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_details, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "libgen.io/book/index.php?md5="+b.getMD5());
+                startActivity(Intent.createChooser(shareIntent, "Share link to LibGen page"));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onRefresh() {
