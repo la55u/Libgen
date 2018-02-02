@@ -1,13 +1,17 @@
 package scenehub.libgen;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -26,9 +30,10 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
     private ArrayList<Book> books;
     private DataAdapter adapter;
     private ProgressBar progressBar = null;
-    private Map<String, Object> searchMap;
+    private Map<String, Object> requestMap;
     private SwipeRefreshLayout swipeRefreshLayout;
     private EndlessRecyclerViewScrollListener scrollListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +48,53 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_sort:
+                createOrderByDialog();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void createOrderByDialog() {
+        final String[] labels = {"Date","File size","Title"};
+        final String[] values = {"date", "size", "title"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this)
+                .setSingleChoiceItems(labels, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        requestMap.put("order", values[i]);
+                    }
+                })
+                .setTitle("Order results by")
+                .setCancelable(true)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getApplicationContext(), "Sorting by: "+ requestMap.get("order"), Toast.LENGTH_SHORT).show();
+                        onRefresh(); //onRefresh does exactly the same thing that's needed here
+                    }
+                });
+
+        builder.create().show();
+    }
+
     private void startSearch(){
-        searchMap = new HashMap<>();
+        requestMap = new HashMap<>();
         if(getIntent().getSerializableExtra("query") != null){
             String query = (String)getIntent().getSerializableExtra("query");
-            searchMap.put("query",query);
+            requestMap.put("query",query);
         }
         else if (getIntent().getSerializableExtra("barcode") != null){
             String barcode = (String)getIntent().getSerializableExtra("barcode");
-            searchMap.put("barcode",barcode);
+            requestMap.put("barcode",barcode);
         }
         loadJSON(0);
     }
@@ -72,7 +115,7 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Toast.makeText(getApplicationContext(), "page: "+page, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Loading more...", Toast.LENGTH_SHORT).show();
                 loadJSON(page);
             }
         };
@@ -81,9 +124,8 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
 
 
     private void loadJSON(final int page){
-        searchMap.put("page", page);
-
-        NetworkManager.getInstance().getBooksJSON(searchMap).enqueue(new Callback<List<Book>>() {
+        requestMap.put("page", page);
+        NetworkManager.getInstance().getBooksJSON(requestMap).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 Log.d(TAG, "onResponse: " + response.code());

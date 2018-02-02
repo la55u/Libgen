@@ -96,7 +96,7 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
                     }
                     @Override
                     public void onError() {
-                        cover.setImageResource(R.drawable.cover_placeholder);
+                        cover.setImageResource(R.mipmap.ic_launcher);
                     }
         });
 
@@ -116,7 +116,7 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
         return false;
     }
 
-    // gets the download url and filename from the server based on the book's MD5
+    // gets the download url and original filename from the server based on the book's MD5
     private void getDownloadUrl(){
         NetworkManager.getInstance().getDownloadUrlJSON(b.getMD5()).enqueue(new Callback<ParseData>() {
             @Override
