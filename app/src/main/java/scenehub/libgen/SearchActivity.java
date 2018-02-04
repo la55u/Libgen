@@ -24,6 +24,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import scenehub.libgen.api.ApiClient;
 
 public class SearchActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     private static final String TAG = SearchActivity.class.getSimpleName();
@@ -125,7 +126,7 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
 
     private void loadJSON(final int page){
         requestMap.put("page", page);
-        NetworkManager.getInstance().getBooksJSON(requestMap).enqueue(new Callback<List<Book>>() {
+        ApiClient.getInstance().getBooksJSON(requestMap).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                 Log.d(TAG, "onResponse: " + response.code());

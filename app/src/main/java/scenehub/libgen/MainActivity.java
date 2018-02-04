@@ -15,11 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.github.atzcx.appverupdater.AppVerUpdater;
-import com.github.atzcx.appverupdater.UpdateErrors;
-import com.github.atzcx.appverupdater.callback.Callback;
+import scenehub.libgen.updater.Updater;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +24,10 @@ public class MainActivity extends AppCompatActivity {
     private SearchView searchView;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    AppVerUpdater appVerUpdater = null;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         initFAB();
 
-        checkUpdate();
+        Updater updater = new Updater(this);
 
     }
 
@@ -138,52 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-    private void checkUpdate(){
-
-        appVerUpdater = new AppVerUpdater()
-                .setUpdateJSONUrl("http:/scenehub.tk/libgen/update.json")
-                .setShowNotUpdated(true)
-                .setViewNotes(true)
-                .setCallback(new Callback() {
-                    @Override
-                    public void onFailure(UpdateErrors error) {
-
-                        if (error == UpdateErrors.NETWORK_NOT_AVAILABLE) {
-                            Toast.makeText(MainActivity.this, "No internet connection.", Toast.LENGTH_LONG).show();
-                        }
-                        else if (error == UpdateErrors.ERROR_CHECKING_UPDATES) {
-                            Toast.makeText(MainActivity.this, "An error occurred while checking for updates.", Toast.LENGTH_LONG).show();
-                        }
-                        else if (error == UpdateErrors.ERROR_DOWNLOADING_UPDATES) {
-                            Toast.makeText(MainActivity.this, "An error occurred when downloading updates.", Toast.LENGTH_LONG).show();
-                        }
-                        else if (error == UpdateErrors.JSON_FILE_IS_MISSING) {
-                            Toast.makeText(MainActivity.this, "Json file is missing.", Toast.LENGTH_LONG).show();
-                        }
-                        else if (error == UpdateErrors.FILE_JSON_NO_DATA) {
-                            Toast.makeText(MainActivity.this, "The file containing information about the updates are empty.", Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onDownloadSuccess() {
-                        // for example, record/reset license
-                    }
-
-                    @Override
-                    public void onUpdateChecked(boolean downloading) {
-                        // Happens after an checkUpdate check, immediately after if checkUpdate check was successful and there
-                        // were no dialogs, or, when an checkUpdate dialog is presented and user explicitly dismissed the dialog.
-                        // "downloading" is true if user accepted the checkUpdate
-                        // Typically used for resetting next checkUpdate check time
-                    }
-                })
-                .setAlertDialogCancelable(true)
-                .build(this);
-
-    }
 
 
 }

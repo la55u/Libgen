@@ -1,4 +1,4 @@
-package scenehub.libgen;
+package scenehub.libgen.api;
 
 import com.google.gson.JsonObject;
 
@@ -9,15 +9,17 @@ import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import scenehub.libgen.Book;
+import scenehub.libgen.DetailsActivity;
 
-public class NetworkManager {
+public class ApiClient {
 
     private static final String BASE_URL = "https://scenehub.tk";
 
-    private static NetworkManager instance;
+    private static ApiClient instance;
     private ApiInterface apiInterface;
 
-    private NetworkManager() {
+    private ApiClient() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(new OkHttpClient.Builder().build())
@@ -27,9 +29,9 @@ public class NetworkManager {
     }
 
 
-    public static NetworkManager getInstance() {
+    public static ApiClient getInstance() {
         if (instance == null) {
-            instance = new NetworkManager();
+            instance = new ApiClient();
         }
         return instance;
     }
@@ -46,6 +48,10 @@ public class NetworkManager {
 
     public Call<JsonObject> getDbInfoJSON(){
         return apiInterface.getDbInfoJSON("asd");
+    }
+
+    public Call<JsonObject> getUpdateJSON(){
+        return apiInterface.getUpdateJSON();
     }
 
 }

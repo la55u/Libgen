@@ -17,15 +17,8 @@
 package com.github.atzcx.appverupdater;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 
 import com.thin.downloadmanager.DownloadRequest;
@@ -167,10 +160,9 @@ class HttpClient {
             }
             Uri downloadUri = Uri.parse(this.url);
 
-            final File SDCardRoot = new File(Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + "/Download");
+            final File SDCardRoot = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download");
 
-             if (SDCardRoot.exists() == false) {
+             if (!SDCardRoot.exists()) {
                  SDCardRoot.mkdirs();
              }
 

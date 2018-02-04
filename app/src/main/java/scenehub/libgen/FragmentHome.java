@@ -24,6 +24,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import scenehub.libgen.api.ApiClient;
 
 
 public class FragmentHome extends android.support.v4.app.Fragment{
@@ -48,7 +49,7 @@ public class FragmentHome extends android.support.v4.app.Fragment{
     }
 
     private void getDbInfo(){
-        NetworkManager.getInstance().getDbInfoJSON().enqueue(new Callback<JsonObject>() {
+        ApiClient.getInstance().getDbInfoJSON().enqueue(new Callback<JsonObject>() {
 
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

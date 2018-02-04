@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import scenehub.libgen.api.ApiClient;
 
 public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = DetailsActivity.class.getSimpleName();
@@ -118,7 +119,7 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
 
     // gets the download url and original filename from the server based on the book's MD5
     private void getDownloadUrl(){
-        NetworkManager.getInstance().getDownloadUrlJSON(b.getMD5()).enqueue(new Callback<ParseData>() {
+        ApiClient.getInstance().getDownloadUrlJSON(b.getMD5()).enqueue(new Callback<ParseData>() {
             @Override
             public void onResponse(Call<ParseData> call, Response<ParseData> response) {
                 Log.d(TAG, "onResponse: " + response.code());

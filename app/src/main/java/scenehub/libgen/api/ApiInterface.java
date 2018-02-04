@@ -1,4 +1,4 @@
-package scenehub.libgen;
+package scenehub.libgen.api;
 
 import com.google.gson.JsonObject;
 
@@ -9,6 +9,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import scenehub.libgen.Book;
+import scenehub.libgen.DetailsActivity;
 
 public interface ApiInterface {
 
@@ -20,4 +22,7 @@ public interface ApiInterface {
 
     @GET("libgen/api.php")
     Call<JsonObject> getDbInfoJSON(@Query("info") String asd);
+
+    @GET("libgen/update.php")
+    Call<JsonObject> getUpdateJSON();
 }
