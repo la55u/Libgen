@@ -1,4 +1,6 @@
 # Libgen for Android
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+
 A lightweight, material design app to download books and papers from Library Genesis on the go.
 
 ## Features
@@ -12,6 +14,9 @@ A lightweight, material design app to download books and papers from Library Gen
 
 ## Screenshots
 ![alt text](https://raw.githubusercontent.com/la55u/Libgen/master/screenshots/1.jpg)
+
+## Requirements
+Supported Android versions: 5.0 (Lollipop) - 8.1 (Oreo)
 
 ## Download
 You can find a copy of the [latest apk file here](https://scenehub.tk/libgen/app-debug.apk), or you can compile the code for yourself in Android Studio. The two are identical.
