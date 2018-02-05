@@ -20,3 +20,6 @@ You can find a copy of the [latest apk file here](https://scenehub.tk/libgen/app
 * Storage permission is required to download files and updates for the app. You can browse the library without granting this permission but cannot download anything.
 * Camera permission is used only for the barcode scanning feature. 
 * Internet permission is essential to use the app.
+
+## Developers
+All developers are welcome to commit changes on improving the code or adding more features!
