@@ -1,20 +1,22 @@
 # Libgen for Android
-A lightweight app to download files from Library Genesis
+A lightweight, material design app to download books and papers from Library Genesis on the go.
 
 ## Features
-* Library of over 2 million books
-* Browsing even when libgen is down
+* Over 2 million books in the library
+* Browse the library even while Libgen is offline
 * Download or save for later
-* Search for title, author, series, publisher or year
-* Search with the barcode scanner
+* Search by title, author, series, publisher or year
+* Find out if a book is available to download with the barcode scanning feature
 * Auto app updates 
 
 
 ## Screenshots
 ![alt text](https://raw.githubusercontent.com/la55u/Libgen/master/screenshots/1.jpg)
 
+## Download
+You can find a copy of the [latest apk file here](https://scenehub.tk/libgen/app-debug.apk), or you can compile the code for yourself in Android Studio. The two are identical.
 
 ## Permissions
-* Storage permission is required to download files and updates for the app. You can browse the library without granting it but cannot download anything.
+* Storage permission is required to download files and updates for the app. You can browse the library without granting this permission but cannot download anything.
 * Camera permission is used only for the barcode scanning feature. 
 * Internet permission is essential to use the app.
