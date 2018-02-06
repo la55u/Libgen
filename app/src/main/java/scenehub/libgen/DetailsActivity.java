@@ -151,7 +151,7 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(parseData.getUrl()));
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, parseData.getFilename());
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, b.getTitle()+'-'+b.getAuthor()+'-'+b.getYear());
         DownloadManager manager = (DownloadManager)this.getSystemService(Context.DOWNLOAD_SERVICE);
         if (manager != null) {
             manager.enqueue(request);
@@ -212,9 +212,9 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
     // a class that represents the received data when requesting the download link
     public class ParseData {
         private String url;
-        private String filename;
+        //private String filename;
         public String getUrl(){return url;}
-        public String getFilename(){return filename;}
+        //public String getFilename(){return filename;}
     }
 
 

@@ -19,7 +19,7 @@ A lightweight, material design app to download books and papers from Library Gen
 Supported Android versions: 5.0 (Lollipop) - 8.1 (Oreo)
 
 ## Download
-You can find a copy of the [latest apk file here](https://scenehub.tk/libgen/app-release.apk), or you can compile the code for yourself in Android Studio. The two are identical.
+You can find a copy of the [latest apk file here](https://scenehub.tk/libgen/app-release.apk), or you can compile the code for yourself in Android Studio. The two are identical on source level.
 
 ## Permissions
 * Storage permission is required to download files and updates for the app. You can browse the library without granting this permission but cannot download anything.
