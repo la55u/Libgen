@@ -14,7 +14,7 @@ import scenehub.libgen.DetailsActivity;
 
 public class ApiClient {
 
-    private static final String BASE_URL = "https://scenehub.tk";
+    private static final String BASE_URL = "https://scenehub.tk/libgen/";
 
     private static ApiClient instance;
     private ApiInterface apiInterface;

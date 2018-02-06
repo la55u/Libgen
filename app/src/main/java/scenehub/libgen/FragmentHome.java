@@ -53,9 +53,8 @@ public class FragmentHome extends android.support.v4.app.Fragment{
 
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                Log.d(TAG, "onResponse: " + response.code());
+                Log.d(TAG, "onResponse code: " + response.code()+" body: "+response.body());
                 if (response.isSuccessful()) {
-                    //Toast.makeText(getContext(), response.body().toString(), Toast.LENGTH_LONG).show();
                     dbInfo = new Gson().fromJson(response.body(), new TypeToken<HashMap<String, String>>(){}.getType());
                     fillInfo();
                 } else {
@@ -65,7 +64,8 @@ public class FragmentHome extends android.support.v4.app.Fragment{
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(getContext(), "Error in network request: "+t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Log.d(TAG, "Error in network request: "+t.getMessage());
+                Toast.makeText(getContext(), "Error in network request", Toast.LENGTH_LONG).show();
             }
         });
     }

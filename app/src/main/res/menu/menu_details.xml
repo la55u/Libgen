@@ -3,6 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="scenehub.libgen.MainActivity">
 
+
+    <item
+        android:id="@+id/add_favorite"
+        android:icon="@drawable/ic_favorite_border_white_24dp"
+        android:title="@string/menu_addfavorite"
+        android:visible="true"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/remove_favorite"
+        android:icon="@drawable/ic_favorite_white_24dp"
+        android:title="@string/menu_removefavorite"
+        android:visible="false"
+        app:showAsAction="always"
+        />
+
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share_white_24dp"

@@ -14,15 +14,15 @@ import scenehub.libgen.DetailsActivity;
 
 public interface ApiInterface {
 
-    @GET("libgen/api.php")
+    @GET("api.php")
     Call<List<Book>> getBooksJSON(@QueryMap Map<String, Object> map);
 
-    @GET("libgen/api.php")
+    @GET("api.php")
     Call<DetailsActivity.ParseData> getDownloadUrlJSON(@Query("md5") String md5);
 
-    @GET("libgen/api.php")
+    @GET("api.php")
     Call<JsonObject> getDbInfoJSON(@Query("info") String asd);
 
-    @GET("libgen/update.php")
+    @GET("update.json")
     Call<JsonObject> getUpdateJSON();
 }

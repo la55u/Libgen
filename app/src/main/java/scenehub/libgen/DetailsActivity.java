@@ -32,7 +32,7 @@ import scenehub.libgen.api.ApiClient;
 
 public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = DetailsActivity.class.getSimpleName();
-    private Button btnDownload, btnFavorite;
+    private Button btnDownload;
     private Book b;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ParseData parseData;
@@ -49,7 +49,6 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
 
         initView();
         getDownloadableData();
-        initButtons();
     }
 
 
@@ -79,8 +78,18 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
             tvPages.setText(getString(R.string.pages_count,b.getPages()));
             tvEdition.setText(b.getEdition().equals("") ? "-" : b.getEdition());
             tvLanguage.setText(b.getLanguage());
-            tvScanned.setText(b.getScanned().equals("1") ? "Yes" : (b.getScanned().equals("0") ? "No" : "?"));
+            tvScanned.setText(b.getScanned().equals("1") ? "Yes" : (b.getScanned().equals("0") ? "No" : "-"));
         }
+
+        btnDownload = findViewById(R.id.btnDownload);
+        btnDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (requestNeededPermission()) {
+                    downloadFile();
+                }
+            }
+        });
     }
 
     // getting everything that sources from the web
@@ -133,7 +142,7 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
             @Override
             public void onFailure(Call<ParseData> call, Throwable t) {
                 t.printStackTrace();
-                Snackbar.make(findViewById(R.id.scrollview), "Error requesting download url, check LOG", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.scrollview), "Error requesting download url, check log", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -151,38 +160,18 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
     }
 
 
-   public void initButtons() {
-       btnDownload = findViewById(R.id.btnDownload);
-       btnDownload.setEnabled(false); //download button is not active until download link is received
-       btnDownload.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if (requestNeededPermission()) {
-                   downloadFile();
-               }
-           }
-       });
-
-       btnFavorite = findViewById(R.id.btnFavorite);
-       if(b.isFavorite()){
-           btnFavorite.setText(R.string.btn_text_remove_favorite);
-       }
-       btnFavorite.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if(!b.isFavorite()){
-                   b.save();
-                   Snackbar.make(findViewById(R.id.scrollview), "Successfully added to favorites", Snackbar.LENGTH_SHORT).show();
-                   btnFavorite.setText(R.string.btn_text_remove_favorite);
-               }else{
-                   Book.deleteAll(Book.class, "MD5 =? ", b.getMD5());
-                   Snackbar.make(findViewById(R.id.scrollview), "Successfully removed from favorites", Snackbar.LENGTH_SHORT).show();
-                   btnFavorite.setText(R.string.btn_text_add_favorite);
-               }
-           }
-       });
-   }
-
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // deciding which menu item to choose before drawing the menu
+        if (b.isFavorite()) {
+            menu.findItem(R.id.add_favorite).setVisible(false);
+            menu.findItem(R.id.remove_favorite).setVisible(true);
+        } else {
+            menu.findItem(R.id.add_favorite).setVisible(true);
+            menu.findItem(R.id.remove_favorite).setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -199,16 +188,28 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
                 shareIntent.putExtra(Intent.EXTRA_TEXT, "libgen.io/book/index.php?md5="+b.getMD5());
                 startActivity(Intent.createChooser(shareIntent, "Share link to LibGen page"));
                 break;
+            case R.id.add_favorite:
+                b.save();
+                invalidateOptionsMenu(); //will cause the menu to be redrawn and call onPrepareOptionsMenu again
+                Snackbar.make(findViewById(R.id.scrollview), "Successfully added to favorites", Snackbar.LENGTH_SHORT).show();
+                break;
+            case R.id.remove_favorite:
+                Book.deleteAll(Book.class, "MD5 =? ", b.getMD5());
+                invalidateOptionsMenu(); //will cause the menu to be redrawn and call onPrepareOptionsMenu again
+                Snackbar.make(findViewById(R.id.scrollview), "Successfully removed from favorites", Snackbar.LENGTH_SHORT).show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onRefresh() {
+        // "pull to refresh" gesture
         getDownloadableData();
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    // a class that represents the received data when requesting the download link
     public class ParseData {
         private String url;
         private String filename;

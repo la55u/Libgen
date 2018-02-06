@@ -39,8 +39,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.MyViewHolder> 
         myViewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra("book", book);
+                Intent intent = new Intent(context, DetailsActivity.class)
+                        .putExtra("book", book)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

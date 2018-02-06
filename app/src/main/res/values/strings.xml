@@ -38,5 +38,7 @@
     <string name="up">UP</string>
     <string name="down">DOWN</string>
     <string name="menu_sort">Sort</string>
+    <string name="menu_addfavorite">Add favorite</string>
+    <string name="menu_removefavorite">Remove favorite</string>
 
 </resources>
