@@ -40,5 +40,6 @@
     <string name="menu_sort">Sort</string>
     <string name="menu_addfavorite">Add favorite</string>
     <string name="menu_removefavorite">Remove favorite</string>
+    <string name="btn_text_urlopen">Open link</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package scenehub.libgen;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.customtabs.CustomTabsClient;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -32,7 +35,7 @@ import scenehub.libgen.api.ApiClient;
 
 public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = DetailsActivity.class.getSimpleName();
-    private Button btnDownload;
+    private Button btnDownload, btnUrlOpen;
     private Book b;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ParseData parseData;
@@ -90,6 +93,14 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
                 }
             }
         });
+        btnUrlOpen = findViewById(R.id.btnUrlOpen);
+        btnUrlOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openUrlCustomTab();
+            }
+        });
+
     }
 
     // getting everything that sources from the web
@@ -112,6 +123,21 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
 
         // getting download url
         getDownloadUrl();
+    }
+
+
+    public void openUrlCustomTab(){
+        String url = "http://libgen.io/book/index.php?md5=" + b.getMD5();
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder()
+                .setShowTitle(true)
+                .addDefaultShareMenuItem()
+                .setToolbarColor(ContextCompat.getColor(getApplicationContext(),R.color.colorPrimary));
+
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(getApplicationContext(), Uri.parse(url));
+        
+
+
     }
 
 
