@@ -135,7 +135,7 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
 
         CustomTabsIntent customTabsIntent = builder.build();
         customTabsIntent.launchUrl(getApplicationContext(), Uri.parse(url));
-        
+
 
 
     }
@@ -173,11 +173,14 @@ public class DetailsActivity extends AppCompatActivity implements SwipeRefreshLa
         });
     }
 
+
+
     private void downloadFile() {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(parseData.getUrl()));
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, b.getTitle()+'-'+b.getAuthor()+'-'+b.getYear());
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, b.getTitle()+" by "+b.getAuthor()+'.'+b.getExtension());
+
         DownloadManager manager = (DownloadManager)this.getSystemService(Context.DOWNLOAD_SERVICE);
         if (manager != null) {
             manager.enqueue(request);
