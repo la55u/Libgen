@@ -1,6 +1,8 @@
 # Libgen for Android
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 
+## Currently it does NOT work, a full rewrite is in progress but no ETA.
+
 A lightweight, material design app to download books and papers from Library Genesis on the go.
 
 ## Features
